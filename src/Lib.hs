@@ -89,13 +89,14 @@ bhaskaraSineApproximation :: R -> R
 bhaskaraSineApproximation x = (4*x*(180 - x)) / (40500 - x*(180 - x))
 
 rotateSine :: R -> R
-rotateSine d = if d < (180 % 1) then
-                 bhaskaraSineApproximation d
+rotateSine d = let dNorm = normalizeDegree d in
+               if dNorm < (180 % 1) then
+                 bhaskaraSineApproximation dNorm
                else
-                 -(bhaskaraSineApproximation (d-180))
+                 -(bhaskaraSineApproximation (dNorm-180))
 
 rotateCosine :: R -> R
-rotateCosine d = rotateSine (normalizeDegree (d+90))
+rotateCosine d = rotateSine (d+90)
 
 applyAuxTransformToPoint :: AuxTransform -> Point -> Point
 applyAuxTransformToPoint (VectorTransform translation) p = direction (Vec { direction = p } >< translation)
